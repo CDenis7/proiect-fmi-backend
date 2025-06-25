@@ -1,5 +1,6 @@
-# MODIFICARE: Folosim o imagine de build cu Java 24
-FROM maven:3.9.8-eclipse-temurin-24 AS build
+# Etapa 1: Folosim o imagine de build validă cu Java 24 de la SAP
+# Această imagine este oficială și bine întreținută.
+FROM maven:3-sapmachine-24 AS build
 
 # Copiem tot codul sursă în containerul de build
 COPY . .
@@ -8,7 +9,8 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 
-# MODIFICARE: Folosim o imagine finală tot cu Java 24 (JRE - mai mică)
+# Etapa 2: Folosim o imagine de rulare validă și mică (JRE) cu Java 24
+# Eclipse Temurin este un furnizor de încredere pentru OpenJDK.
 FROM eclipse-temurin:24-jre
 
 # Copiem doar fișierul .jar rezultat din etapa de build
